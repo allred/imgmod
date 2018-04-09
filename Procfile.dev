@@ -1,0 +1,2 @@
+web: pwd && cd client && export PORT=3000 && pwd && npm start
+api: bundle exec rails s -p 3001
