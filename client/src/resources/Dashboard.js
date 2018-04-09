@@ -23,16 +23,30 @@ class Dashboard extends Component {
       this.setState({images: images})
     })
   }
+  getImagesApproved() {
+    this.fetch('api/images?filter_status=approved')
+    .then(images => {
+      this.setState({images: images})
+    })
+  }
+  getImagesRefused() {
+    this.fetch('api/images?filter_status=refused')
+    .then(images => {
+      this.setState({images: images})
+    })
+  }
   render() {
     let images = this.state.images 
-    console.log(images)
     return images ? (
       <div>
         <h2>Dashboard</h2>
-        <h3>Stats</h3>
-        <h3>{images.length} Images <button></button></h3>
+        <h3>{images.length} Images </h3>
+        Filter:
+          <button onClick={() => this.getImages()}>All</button>
+          <button onClick={() => this.getImagesApproved()}>Approved</button>
+          <button onClick={() => this.getImagesRefused()}>Refused</button>
       {images.map((img) =>
-        <div>{img.id}<img key={img.id} src={img.url} alt="" /></div>
+        <div key={img.id}>{img.id}<img key={img.id} src={img.url} alt="" /></div>
       )}
       </div>
     )

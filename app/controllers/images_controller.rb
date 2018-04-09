@@ -3,7 +3,13 @@ class ImagesController < ApplicationController
 
   # GET /images
   def index
-    @images = Image.all
+    if params[:filter_status] == "approved"
+      @images = Image.where(status: "approved")
+    elsif params[:filter_status] == "refused"
+      @images = Image.where(status: "refused")
+    else
+      @images = Image.all
+    end
 
     render json: @images
   end
@@ -46,6 +52,6 @@ class ImagesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def image_params
-      params.require(:image).permit(:url, :time_entered, :moderator, :status)
+      params.require(:image).permit(:url, :time_entered, :moderator, :status, :filter)
     end
 end
