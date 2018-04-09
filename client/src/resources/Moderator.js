@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 const queryString = require('query-string')
 
-class Moderate extends Component {
+class Moderator extends Component {
   constructor() {
     super()
     this.state = {}
@@ -60,7 +60,7 @@ class Moderate extends Component {
     let user = params.user ? params.user : "unknown"
     return (
       <div>
-        <h2>Moderate - User: {user}</h2>
+        <h2>Moderator - User: {user}</h2>
         <h3>New Images</h3>
         {images_new ? images_new.map((img) =>
           <div key={img.id}>
@@ -89,4 +89,4 @@ class Moderate extends Component {
   }
 }
 
-export default Moderate
+export default Moderator

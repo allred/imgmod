@@ -5,7 +5,7 @@ import {
   Link
 } from 'react-router-dom'
 import Dashboard from './resources/Dashboard'
-import Moderate from './resources/Moderate'
+import Moderator from './resources/Moderator'
 import './App.css';
 
 class App extends Component {
@@ -15,11 +15,11 @@ class App extends Component {
         <Router>
           <div>
             <ul>
-              <li><Link to="/moderate">Moderate</Link></li>
+              <li><Link to="/moderator">Moderator</Link></li>
               <li><Link to="/dashboard">Dashboard</Link></li>
             </ul>
             <hr/>
-           <Route path="/moderate" component={Moderate}/>
+           <Route path="/moderator" component={Moderator}/>
            <Route path="/dashboard" component={Dashboard}/>
           </div>
         </Router>
