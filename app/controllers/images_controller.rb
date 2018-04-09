@@ -3,11 +3,12 @@ class ImagesController < ApplicationController
 
   # GET /images
   def index
+    order = {created_at: :asc}
+    where = {}
     limit = nil
     if params[:limit]
       limit = params[:limit]
     end
-    where = {}
     if params[:filter_status] == "approved"
       where.merge! status: "approved"
     elsif params[:filter_status] == "refused"
@@ -17,7 +18,10 @@ class ImagesController < ApplicationController
     elsif params[:filter_status] == "moderated"
       where = "status != 'unmoderated'"
     end
-    @images = Image.where(where).limit(limit)
+    if params[:order] == "updated_at_desc"
+      order = {updated_at: :desc}
+    end
+    @images = Image.where(where).order(order).limit(limit)
 
     render json: @images
   end

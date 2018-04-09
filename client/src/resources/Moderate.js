@@ -25,7 +25,7 @@ class Moderate extends Component {
     })
   }
   getImagesRecentlyModerated() {
-    this.fetch('api/images?filter_status=moderated&limit=5')
+    this.fetch('api/images?filter_status=moderated&order=updated_at_desc&limit=5')
     .then(images => {
       this.setState({images_recently_moderated: images})
     })
@@ -33,13 +33,8 @@ class Moderate extends Component {
   moderateImage(id, status) {
     let params = queryString.parse(this.props.location.search)
     let user = params.user ? params.user : "unknown"
-    let formData = new FormData()
-    formData.append('status', status)
-    //formData.append('image', id)
-    //formData.append('image', JSON.stringify({id: id, status: status}))
     return fetch('api/images/' + id, {
       method: 'PUT',
-      //body: formData 
       body: JSON.stringify({"status": status, "moderator": user}),
       headers: {
         'Accept': 'application/json',
@@ -48,7 +43,12 @@ class Moderate extends Component {
     })
     .then(response => response.json())
   }
-  moderateRefresh(id, status) {
+  moderateNew(id, status) {
+    this.moderateImage(id, status)
+    this.getImagesNew()
+    this.getImagesRecentlyModerated()
+  }
+  moderateRecentlyModerated(id, status) {
     this.moderateImage(id, status)
     this.getImagesNew()
     this.getImagesRecentlyModerated()
@@ -66,8 +66,8 @@ class Moderate extends Component {
           <div key={img.id}>
             {img.id}
             <img key={img.id} src={img.url} alt="" />
-            <button onClick={() => this.moderateRefresh(img.id, "approved")}>Approve</button>
-            <button onClick={() => this.moderateRefresh(img.id, "refused")}>Refuse</button>
+            <button onClick={() => this.moderateNew(img.id, "approved")}>Approve</button>
+            <button onClick={() => this.moderateNew(img.id, "refused")}>Refuse</button>
             - {img.status ? img.status : "unmoderated"}
           </div>
         )
@@ -77,7 +77,9 @@ class Moderate extends Component {
         {images_recently_moderated ? images_recently_moderated.map((img) =>
           <div key={img.id}>
           <img key={img.id} src={img.url} alt="" />
-          - {img.status ? img.status : "unmoderated"} by {img.moderator}
+            <button onClick={() => this.moderateRecentlyModerated(img.id, "approved")}>Approve</button>
+            <button onClick={() => this.moderateRecentlyModerated(img.id, "refused")}>Refuse</button>
+          - {img.status ? img.status : "unmoderated"} by {img.moderator} at {img.updated_at}
           </div>
         )
         : <div>no recently moderated images found</div>

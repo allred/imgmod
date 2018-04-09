@@ -23,6 +23,12 @@ class Dashboard extends Component {
       this.setState({images: images})
     })
   }
+  getImagesUnmoderated() {
+    this.fetch('api/images?filter_status=unmoderated')
+    .then(images => {
+      this.setState({images: images})
+    })
+  }
   getImagesApproved() {
     this.fetch('api/images?filter_status=approved')
     .then(images => {
@@ -43,6 +49,7 @@ class Dashboard extends Component {
         <h3>{images? images.length : 0} Images </h3>
         Filter:
           <button onClick={() => this.getImages()}>All</button>
+          <button onClick={() => this.getImagesUnmoderated()}>Unmoderated</button>
           <button onClick={() => this.getImagesApproved()}>Approved</button>
           <button onClick={() => this.getImagesRefused()}>Refused</button>
       {images ? images.map((img) =>
