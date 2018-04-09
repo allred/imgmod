@@ -5,13 +5,8 @@ import {
   Link
 } from 'react-router-dom'
 import Dashboard from './resources/Dashboard'
+import Moderate from './resources/Moderate'
 import './App.css';
-
-const Moderate = () => (
-  <div>
-    <h2>Moderate</h2>
-  </div>
-)
 
 class App extends Component {
   render() {

@@ -13,6 +13,7 @@ File.open(path_input, 'r') do |f|
     Image.create({
       time_entered: DateTime.strptime(time_entered, '%s'),
       url: url,
+      status: "unmoderated",
     })
   end
 end

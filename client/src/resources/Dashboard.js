@@ -40,19 +40,20 @@ class Dashboard extends Component {
     return images ? (
       <div>
         <h2>Dashboard</h2>
-        <h3>{images.length} Images </h3>
+        <h3>{images? images.length : 0} Images </h3>
         Filter:
           <button onClick={() => this.getImages()}>All</button>
           <button onClick={() => this.getImagesApproved()}>Approved</button>
           <button onClick={() => this.getImagesRefused()}>Refused</button>
-      {images.map((img) =>
+      {images ? images.map((img) =>
         <div key={img.id}>{img.id}<img key={img.id} src={img.url} alt="" /></div>
-      )}
+      ): <div></div>}
       </div>
     )
-    : (
-      <div>No images found</div>
-    )
+    : <div>
+        <h2>Dashboard</h2>
+        <h3>0 Images </h3>
+      </div>
   }
 }
 

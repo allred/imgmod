@@ -3,13 +3,21 @@ class ImagesController < ApplicationController
 
   # GET /images
   def index
-    if params[:filter_status] == "approved"
-      @images = Image.where(status: "approved")
-    elsif params[:filter_status] == "refused"
-      @images = Image.where(status: "refused")
-    else
-      @images = Image.all
+    limit = nil
+    if params[:limit]
+      limit = params[:limit]
     end
+    where = {}
+    if params[:filter_status] == "approved"
+      where.merge! status: "approved"
+    elsif params[:filter_status] == "refused"
+      where.merge! status: "refused"
+    elsif params[:filter_status] == "unmoderated"
+      where.merge! status: "unmoderated"
+    elsif params[:filter_status] == "moderated"
+      where = "status != 'unmoderated'"
+    end
+    @images = Image.where(where).limit(limit)
 
     render json: @images
   end
@@ -52,6 +60,6 @@ class ImagesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def image_params
-      params.require(:image).permit(:url, :time_entered, :moderator, :status, :filter)
+      params.require(:image).permit(:url, :time_entered, :moderator, :status)
     end
 end
