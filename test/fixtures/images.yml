@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  url: MyString
+  time_entered: 2018-04-09 08:13:03
+  moderator: MyString
+  status: MyString
+
+two:
+  url: MyString
+  time_entered: 2018-04-09 08:13:03
+  moderator: MyString
+  status: MyString
