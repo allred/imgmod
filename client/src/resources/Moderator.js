@@ -5,7 +5,8 @@ class Moderator extends Component {
   constructor() {
     super()
     this.state = {}
-    this.poll_milliseconds = 5000
+    this.empty_poll_milliseconds = 5000
+    this.always_poll_milliseconds = 100000
   }
   componentDidMount() {
     this.getImagesNew()
@@ -58,11 +59,16 @@ class Moderator extends Component {
     let images_new = this.state.images_new
     let images_recently_moderated = this.state.images_recently_moderated
     let params = queryString.parse(this.props.location.search)
-    let user = params.user ? params.user : "unknown"
-    images_new && !images_new.length && setTimeout(() => {this.getImagesNew()}, this.poll_milliseconds)
+
+    // poll periodically (more often) when queue is empty
+    images_new && !images_new.length && setTimeout(() => {this.getImagesNew()}, this.empty_poll_milliseconds)
+
+    // always poll every n minutes to avoid stale interface
+    setTimeout(() => {this.getImagesNew()}, this.always_poll_milliseconds)
     return (
       <div>
-        <h2>Moderator - User: {user}</h2>
+        <h2>Moderator - User: {params.user ? params.user : "unknown"}</h2>
+      {params.user ? '' : <small>(add ?user=YourName to query string)</small>}
         <h3>New Images</h3>
         {images_new && images_new.length ? images_new.map((img) =>
           <div key={img.id}>
