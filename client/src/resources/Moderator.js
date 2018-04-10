@@ -5,6 +5,7 @@ class Moderator extends Component {
   constructor() {
     super()
     this.state = {}
+    this.checkKey = this.checkKey.bind(this)
     this.empty_poll_milliseconds = 5000
     this.always_poll_milliseconds = 100000
   }
@@ -47,18 +48,35 @@ class Moderator extends Component {
   }
   moderateNew(id, status) {
     this.moderateImage(id, status)
-    this.getImagesNew()
-    this.getImagesRecentlyModerated()
+    .then(this.getImagesNew())
+    .then(this.getImagesRecentlyModerated())
   }
   moderateRecentlyModerated(id, status) {
     this.moderateImage(id, status)
-    this.getImagesNew()
-    this.getImagesRecentlyModerated()
+    .then(this.getImagesNew())
+    .then(this.getImagesRecentlyModerated())
+  }
+  checkKey(e) {
+    e = e || window.event
+    let images_new = this.state.images_new
+    if (!images_new) {
+      return
+    }
+    let id_image_latest = this.state.images_new[0].id
+    if (e.keyCode === 37) {
+      this.moderateNew(id_image_latest, "approved")
+    }
+    else if (e.keyCode === 39) {
+      this.moderateNew(id_image_latest, "refused")
+    }
   }
   render() {
     let images_new = this.state.images_new
     let images_recently_moderated = this.state.images_recently_moderated
     let params = queryString.parse(this.props.location.search)
+
+    // allow moderation with the arrow keys: left=approve, right=refuse
+    document.onkeydown = this.checkKey
 
     // poll periodically (more often) when queue is empty
     images_new && !images_new.length && setTimeout(() => {this.getImagesNew()}, this.empty_poll_milliseconds)
@@ -69,6 +87,7 @@ class Moderator extends Component {
       <div>
         <h2>Moderator - User: {params.user ? params.user : "unknown"}</h2>
       {params.user ? '' : <small>(add ?user=YourName to query string)</small>}
+      <small>Keyboard Shortcuts: Approve=LeftArrow, Refuse=RightArrow</small>
         <h3>New Images</h3>
         {images_new && images_new.length ? images_new.map((img) =>
           <div key={img.id}>
