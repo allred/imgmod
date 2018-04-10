@@ -5,6 +5,7 @@ class Moderator extends Component {
   constructor() {
     super()
     this.state = {}
+    this.poll_milliseconds = 5000
   }
   componentDidMount() {
     this.getImagesNew()
@@ -58,11 +59,12 @@ class Moderator extends Component {
     let images_recently_moderated = this.state.images_recently_moderated
     let params = queryString.parse(this.props.location.search)
     let user = params.user ? params.user : "unknown"
+    images_new && !images_new.length && setTimeout(() => {this.getImagesNew()}, this.poll_milliseconds)
     return (
       <div>
         <h2>Moderator - User: {user}</h2>
         <h3>New Images</h3>
-        {images_new ? images_new.map((img) =>
+        {images_new && images_new.length ? images_new.map((img) =>
           <div key={img.id}>
             {img.id}
             <img key={img.id} src={img.url} alt="" />
@@ -71,7 +73,7 @@ class Moderator extends Component {
             - {img.status ? img.status : "unmoderated"}
           </div>
         )
-        : <div>no images found</div>
+        : <div>the queue is empty</div>
         }
         <h3>Recently Moderated</h3>
         {images_recently_moderated ? images_recently_moderated.map((img) =>
