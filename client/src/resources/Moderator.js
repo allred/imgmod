@@ -86,7 +86,7 @@ class Moderator extends Component {
     return (
       <div>
         <h2>Moderator - User: {params.user ? params.user : "unknown"}</h2>
-      {params.user ? '' : <small>(add ?user=YourName to query string)</small>}
+      {params.user ? '' : <small>(add ?user=YourName to query string) - </small> }
       <small>Keyboard Shortcuts: Approve=LeftArrow, Refuse=RightArrow</small>
         <h3>New Images</h3>
         {images_new && images_new.length ? images_new.map((img) =>
