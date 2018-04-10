@@ -21,8 +21,6 @@ How to run:
   - MacOS: `brew install yarn && cd client && yarn`
   - Linux: see the yarn website for instructions
 
-- `cd client && yarn`
-
 - rake db:reset
 
 - rake start
