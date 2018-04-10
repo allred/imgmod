@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+How to run:
 
-Things you may want to cover:
+- clone this repo
 
-* Ruby version
+- gem install rails
+  - this was developed with Ruby 2.5.0 and Rails 5.1.6
+  - you may need to install rvm, instructions are at https://rvm.io/
 
-* System dependencies
+- install yarn
+  - MacOS: brew install yarn && cd client && yarn
 
-* Configuration
+- rake db restart
 
-* Database creation
+- rake start
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+At this point you should be able to point your browser at http://localhost:3001 and see a minimal home page with links to the Moderator and Dashboard pages.
